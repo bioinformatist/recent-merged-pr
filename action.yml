@@ -1,0 +1,63 @@
+name: Recent Merged PR
+description: Show recent merged pull requests from external repositories in a README.
+author: bioinformatist
+
+inputs:
+  github-token:
+    description: GitHub token used to query GraphQL API.
+    required: false
+    default: ${{ github.token }}
+  readme-path:
+    description: README path to update when output-only is false.
+    required: false
+    default: README.md
+  limit:
+    description: Number of pull requests to keep after filtering and sorting.
+    required: false
+    default: "6"
+  lookback-days:
+    description: Only consider pull requests merged within this many days.
+    required: false
+    default: "365"
+  marker-start:
+    description: Start marker for the generated README block.
+    required: false
+    default: "<!-- RECENT_PRS_START -->"
+  marker-end:
+    description: End marker for the generated README block.
+    required: false
+    default: "<!-- RECENT_PRS_END -->"
+  include-private:
+    description: Include private repositories in the generated list.
+    required: false
+    default: "false"
+  output-only:
+    description: Print and expose generated Markdown without editing the README.
+    required: false
+    default: "false"
+
+outputs:
+  markdown:
+    description: Generated Markdown block. Set when output-only is true.
+
+runs:
+  using: composite
+  steps:
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+    - name: Run recent-merged-pr
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        INPUT_README_PATH: ${{ inputs.readme-path }}
+        INPUT_LIMIT: ${{ inputs.limit }}
+        INPUT_LOOKBACK_DAYS: ${{ inputs.lookback-days }}
+        INPUT_MARKER_START: ${{ inputs.marker-start }}
+        INPUT_MARKER_END: ${{ inputs.marker-end }}
+        INPUT_INCLUDE_PRIVATE: ${{ inputs.include-private }}
+        INPUT_OUTPUT_ONLY: ${{ inputs.output-only }}
+      run: cargo run --release --manifest-path "${{ github.action_path }}/Cargo.toml"
+
+branding:
+  icon: git-pull-request
+  color: orange
