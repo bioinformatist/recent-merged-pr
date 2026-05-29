@@ -8,29 +8,21 @@ like maintained or owned work.
 
 The motivation is simple: many generous engineers spend real time improving
 other people's projects, but those contributions are easy to miss on a profile.
-This action turns that quiet community work into a small, current, readable
-signal.
+**This action turns that quiet community work into a small, current, readable
+signal.**
 
 ## Behavior
-
-```mermaid
-flowchart TD
-    A[Resolve profile owner] --> B[Search merged PRs authored by owner]
-    B --> C[Keep PRs merged within lookback-days]
-    C --> D[Drop private repos unless include-private is true]
-    D --> E[Drop repos where token has ADMIN or MAINTAIN]
-    E --> F[Sort by mergedAt descending]
-    F --> G[Keep limit entries]
-    G --> H[Replace README marker block or emit Markdown]
-```
 
 In order, the action:
 
 1. Resolves the profile owner from the workflow context.
 2. Searches merged pull requests authored by that owner.
-3. Applies the time window, privacy, and maintained-repository filters.
-4. Sorts by merge time and keeps `limit` entries.
-5. Edits the README marker block, unless `output-only` is enabled.
+3. Keeps only PRs merged within `lookback-days`.
+4. Excludes private repositories unless `include-private` is true.
+5. Excludes repositories where the token has `ADMIN` or `MAINTAIN` permission.
+6. Sorts the remaining PRs by merge time descending.
+7. Keeps `limit` entries.
+8. Edits the README marker block, unless `output-only` is enabled.
 
 > [!TIP]
 > Repositories where the token has `ADMIN` or `MAINTAIN` permission are treated
