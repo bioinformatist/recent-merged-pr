@@ -6,18 +6,36 @@ This action is designed for GitHub profile READMEs. It highlights merged pull
 requests authored by the profile owner while excluding repositories that look
 like maintained or owned work.
 
+The motivation is simple: many generous engineers spend real time improving
+other people's projects, but those contributions are easy to miss on a profile.
+This action turns that quiet community work into a small, current, readable
+signal.
+
 ## Behavior
 
-- Finds pull requests authored by the repository owner.
-- Keeps pull requests merged within `lookback-days`.
-- Excludes private repositories by default.
-- Excludes repositories where the token has `ADMIN` or `MAINTAIN` permission.
-- Sorts by merge time descending and keeps `limit` entries.
-- Replaces the README block between configured markers.
+```mermaid
+flowchart TD
+    A[Resolve profile owner] --> B[Search merged PRs authored by owner]
+    B --> C[Keep PRs merged within lookback-days]
+    C --> D[Drop private repos unless include-private is true]
+    D --> E[Drop repos where token has ADMIN or MAINTAIN]
+    E --> F[Sort by mergedAt descending]
+    F --> G[Keep limit entries]
+    G --> H[Replace README marker block or emit Markdown]
+```
 
-Repositories where the token has `ADMIN` or `MAINTAIN` permission are treated as
-maintained or owned work. They are usually better represented as pinned
-repositories or project highlights rather than recent external contributions.
+In order, the action:
+
+1. Resolves the profile owner from the workflow context.
+2. Searches merged pull requests authored by that owner.
+3. Applies the time window, privacy, and maintained-repository filters.
+4. Sorts by merge time and keeps `limit` entries.
+5. Edits the README marker block, unless `output-only` is enabled.
+
+> [!TIP]
+> Repositories where the token has `ADMIN` or `MAINTAIN` permission are treated
+> as maintained or owned work. They are usually better represented as pinned
+> repositories or project highlights rather than recent external contributions.
 
 ## Usage
 
@@ -34,8 +52,9 @@ Use the action in a workflow:
 name: Update recent merged PRs
 
 on:
+  # Every day at 00:00 UTC, because sadly community work does not pause on weekends.
   schedule:
-    - cron: "17 */12 * * *"
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 permissions:
@@ -62,6 +81,11 @@ jobs:
           git push
 ```
 
+The commit step is intentionally explicit. `github-actions[bot]` is the standard
+bot identity used by GitHub Actions when a workflow commits generated files back
+to the repository. The `git diff --quiet` guard avoids empty commits when the
+generated README block did not change.
+
 ## Inputs
 
 | Input | Default | Meaning |
@@ -77,6 +101,9 @@ jobs:
 
 ## Output-Only Mode
 
+Use `output-only` when you want the generated Markdown but prefer to update files
+yourself.
+
 ```yaml
 - id: recent-prs
   uses: bioinformatist/recent-merged-pr@v0.1.0
@@ -86,6 +113,9 @@ jobs:
 - run: printf '%s\n' '${{ steps.recent-prs.outputs.markdown }}'
 ```
 
+Run `cargo run -- --help` for the equivalent local CLI flags.
+
 ## License
 
-MIT
+Source-available for non-commercial use. Commercial use is reserved to Yu Sun.
+See [LICENSE](LICENSE).
