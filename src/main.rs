@@ -142,9 +142,7 @@ fn main() {
 
 fn run() -> Result<(), Box<dyn Error>> {
     let config = parse_args()?;
-    let token = env::var("GITHUB_TOKEN")
-        .or_else(|_| env::var("GH_TOKEN"))
-        .map_err(|_| "Set GITHUB_TOKEN or GH_TOKEN")?;
+    let token = env::var("RECENT_MERGED_PR_TOKEN").map_err(|_| "Set RECENT_MERGED_PR_TOKEN")?;
     let login = resolve_login(&token)?;
 
     let since = (Utc::now() - Duration::days(config.lookback_days))

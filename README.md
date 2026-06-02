@@ -31,6 +31,37 @@ In order, the action:
 
 ## Usage
 
+This action requires a personal access token that represents the profile owner.
+Store it as a repository secret, then pass it through the required `token`
+input. The default workflow `GITHUB_TOKEN` is not enough for maintained-repo
+filtering because it only represents the current repository workflow.
+
+<details>
+<summary>Creating the token secret</summary>
+
+Create a personal access token and save it in the profile repository as an
+Actions secret named `RECENT_MERGED_PR_TOKEN`.
+
+Suggested UI path:
+
+1. User **Settings** -> **Developer settings** -> **Personal access tokens**.
+2. Create a token for this action.
+3. Profile repository **Settings** -> **Secrets and variables** -> **Actions**.
+4. Add a repository secret named `RECENT_MERGED_PR_TOKEN`.
+
+For this action, a classic PAT with minimal/no extra scopes is usually the most
+practical choice because it represents your user identity across public
+repositories and organizations you can access. A fine-grained PAT can work when
+its repository owner/access covers the repositories you need, but it may not
+cover every organization-owned repository where `viewerPermission` matters.
+
+GitHub docs:
+
+- [Managing your personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+- [Using secrets in GitHub Actions](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)
+
+</details>
+
 Add markers to your README:
 
 ```md
@@ -57,8 +88,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: bioinformatist/recent-merged-pr@v0.1.0
+      - uses: bioinformatist/recent-merged-pr@v0.1.3
         with:
+          token: ${{ secrets.RECENT_MERGED_PR_TOKEN }}
           limit: 6
           lookback-days: 365
       - name: Commit changes
@@ -82,7 +114,7 @@ generated README block did not change.
 
 | Input | Default | Meaning |
 | --- | --- | --- |
-| `github-token` | `${{ github.token }}` | Token used to query GitHub GraphQL API. |
+| `token` | required | Personal access token representing the profile owner. |
 | `readme-path` | `README.md` | README path to update. |
 | `limit` | `6` | Final number of PRs to display after filtering and sorting. |
 | `lookback-days` | `365` | Only consider PRs merged within this many days. |
@@ -98,14 +130,16 @@ yourself.
 
 ```yaml
 - id: recent-prs
-  uses: bioinformatist/recent-merged-pr@v0.1.0
+  uses: bioinformatist/recent-merged-pr@v0.1.3
   with:
+    token: ${{ secrets.RECENT_MERGED_PR_TOKEN }}
     output-only: true
 
 - run: printf '%s\n' '${{ steps.recent-prs.outputs.markdown }}'
 ```
 
-Run `cargo run -- --help` for the equivalent local CLI flags.
+For local CLI use, set `RECENT_MERGED_PR_TOKEN` and run
+`cargo run -- --help` for the equivalent flags.
 
 ## License
 

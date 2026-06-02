@@ -3,10 +3,9 @@ description: Show recent merged pull requests from external repositories in a RE
 author: bioinformatist
 
 inputs:
-  github-token:
-    description: GitHub token used to query GraphQL API.
-    required: false
-    default: ${{ github.token }}
+  token:
+    description: Personal access token representing the profile owner.
+    required: true
   readme-path:
     description: README path to update when output-only is false.
     required: false
@@ -48,7 +47,7 @@ runs:
     - name: Run recent-merged-pr
       shell: bash
       env:
-        GITHUB_TOKEN: ${{ inputs.github-token }}
+        RECENT_MERGED_PR_TOKEN: ${{ inputs.token }}
         INPUT_README_PATH: ${{ inputs.readme-path }}
         INPUT_LIMIT: ${{ inputs.limit }}
         INPUT_LOOKBACK_DAYS: ${{ inputs.lookback-days }}
