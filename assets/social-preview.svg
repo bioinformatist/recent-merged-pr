@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">Recent Merged PR social preview</title>
+  <desc id="desc">A GitHub social preview showing the Recent Merged PR action features and README output.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1117"/>
+      <stop offset="0.62" stop-color="#101820"/>
+      <stop offset="1" stop-color="#161b22"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <path d="M76 490 C220 406 310 548 445 470 S670 492 802 404 S1038 456 1168 344" fill="none" stroke="#2dd4bf" stroke-opacity="0.16" stroke-width="2"/>
+  <path d="M96 540 C240 456 350 604 490 520 S744 530 890 442 S1064 488 1200 390" fill="none" stroke="#f97316" stroke-opacity="0.18" stroke-width="2"/>
+
+  <g transform="translate(74 80)">
+    <rect x="0" y="0" width="82" height="30" rx="15" fill="#1f2937" stroke="#30363d"/>
+    <text x="41" y="21" text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700" fill="#2dd4bf">Action</text>
+
+    <text x="0" y="92" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="64" font-weight="800" letter-spacing="0" fill="#f0f6fc">Recent Merged PR</text>
+    <text x="0" y="135" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="25" font-weight="500" fill="#8b949e">Show external merged pull requests in your README.</text>
+
+    <g transform="translate(0 190)" font-family="Inter, ui-sans-serif, system-ui, sans-serif">
+      <g>
+        <circle cx="14" cy="13" r="8" fill="#238636"/>
+        <path d="M10 13.5l3.2 3.2L19 9.5" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="34" y="20" font-size="22" font-weight="700" fill="#f0f6fc">Exclude private repositories</text>
+      </g>
+      <g transform="translate(0 54)">
+        <circle cx="14" cy="13" r="8" fill="#238636"/>
+        <path d="M10 13.5l3.2 3.2L19 9.5" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="34" y="20" font-size="22" font-weight="700" fill="#f0f6fc">Filter self-owned or maintained repositories</text>
+      </g>
+      <g transform="translate(0 108)">
+        <circle cx="14" cy="13" r="8" fill="#238636"/>
+        <path d="M10 13.5l3.2 3.2L19 9.5" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="34" y="20" font-size="22" font-weight="700" fill="#f0f6fc">Output Markdown or update README directly</text>
+      </g>
+      <g transform="translate(0 162)">
+        <circle cx="14" cy="13" r="8" fill="#238636"/>
+        <path d="M10 13.5l3.2 3.2L19 9.5" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="34" y="20" font-size="22" font-weight="700" fill="#f0f6fc">Configurable limit and lookback window</text>
+      </g>
+    </g>
+
+    <g transform="translate(0 438)">
+      <rect x="0" y="0" width="360" height="46" rx="8" fill="#0d1117" stroke="#30363d"/>
+      <text x="20" y="30" font-family="SFMono-Regular, Consolas, Liberation Mono, monospace" font-size="18" fill="#f97316">bioinformatist</text>
+      <text x="166" y="30" font-family="SFMono-Regular, Consolas, Liberation Mono, monospace" font-size="18" fill="#8b949e">/</text>
+      <text x="184" y="30" font-family="SFMono-Regular, Consolas, Liberation Mono, monospace" font-size="18" fill="#8b949e">recent-merged-pr</text>
+    </g>
+  </g>
+
+  <g transform="translate(704 88)" filter="url(#shadow)">
+    <rect x="0" y="0" width="500" height="466" rx="14" fill="#f6f8fa"/>
+    <rect x="0" y="0" width="500" height="56" rx="14" fill="#ffffff"/>
+    <path d="M0 56H500" stroke="#d0d7de"/>
+    <text x="24" y="36" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="25" font-weight="800" fill="#24292f">Recent Merged Pull Requests</text>
+
+    <g transform="translate(26 94)" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="20">
+      <circle cx="7" cy="7" r="3" fill="#24292f"/>
+      <text x="22" y="13" fill="#0969da" text-decoration="underline">owner/project#128</text>
+      <text x="240" y="13" fill="#24292f">· parser fix</text>
+      <text x="22" y="48" fill="#57606a">merged 2026-06-01</text>
+
+      <circle cx="7" cy="89" r="3" fill="#24292f"/>
+      <text x="22" y="95" fill="#0969da" text-decoration="underline">team/toolkit#77</text>
+      <text x="224" y="95" fill="#24292f">· README automation</text>
+      <text x="22" y="130" fill="#57606a">merged 2026-05-28</text>
+
+      <circle cx="7" cy="171" r="3" fill="#24292f"/>
+      <text x="22" y="177" fill="#0969da" text-decoration="underline">lib/core#314</text>
+      <text x="196" y="177" fill="#24292f">· CI integration fix</text>
+      <text x="22" y="212" fill="#57606a">merged 2026-05-22</text>
+
+      <circle cx="7" cy="253" r="3" fill="#24292f"/>
+      <text x="22" y="259" fill="#0969da" text-decoration="underline">org/research#42</text>
+      <text x="224" y="259" fill="#24292f">· workflow docs</text>
+      <text x="22" y="294" fill="#57606a">merged 2026-05-10</text>
+    </g>
+
+    <text x="26" y="426" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="19" font-style="italic" fill="#57606a">Last updated: 2026-06-02 00:00 UTC</text>
+  </g>
+</svg>
