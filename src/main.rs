@@ -110,7 +110,7 @@ struct Repository {
     #[serde(rename = "isPrivate")]
     is_private: bool,
     #[serde(rename = "viewerPermission")]
-    viewer_permission: RepositoryPermission,
+    viewer_permission: Option<RepositoryPermission>,
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
@@ -128,7 +128,7 @@ impl PullRequest {
         (include_private || !self.repository.is_private)
             && !matches!(
                 self.repository.viewer_permission,
-                RepositoryPermission::Admin | RepositoryPermission::Maintain
+                Some(RepositoryPermission::Admin | RepositoryPermission::Maintain)
             )
     }
 }
