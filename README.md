@@ -1,5 +1,8 @@
 # Recent Merged PR
 
+[![CI](https://github.com/bioinformatist/recent-merged-pr/actions/workflows/ci.yml/badge.svg)](https://github.com/bioinformatist/recent-merged-pr/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-source--available%20non--commercial-blue)](LICENSE)
+
 Show recent merged pull requests from external repositories in a README.
 
 This action is designed for GitHub profile READMEs. It highlights merged pull
@@ -21,8 +24,9 @@ In order, the action:
 4. Excludes private repositories unless `include-private` is true.
 5. Excludes repositories where the token has `ADMIN` or `MAINTAIN` permission.
 6. Sorts the remaining PRs by merge time descending.
-7. Keeps `limit` entries.
-8. Edits the README marker block, unless `output-only` is enabled.
+7. Keeps `repo-limit` repositories.
+8. Shows up to `max-prs-per-repo` pull requests for each repository.
+9. Edits the README marker block, unless `output-only` is enabled.
 
 > [!TIP]
 > Repositories where the token has `ADMIN` or `MAINTAIN` permission are treated
@@ -88,10 +92,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: bioinformatist/recent-merged-pr@v0.1.3
+      - uses: bioinformatist/recent-merged-pr@v1
         with:
           token: ${{ secrets.RECENT_MERGED_PR_TOKEN }}
-          limit: 6
+          repo-limit: 6
+          max-prs-per-repo: 3
           lookback-days: 365
       - name: Commit changes
         run: |
@@ -116,12 +121,28 @@ generated README block did not change.
 | --- | --- | --- |
 | `token` | required | Personal access token representing the profile owner. |
 | `readme-path` | `README.md` | README path to update. |
-| `limit` | `6` | Final number of PRs to display after filtering and sorting. |
+| `repo-limit` | `6` | Final number of repositories to display after filtering and sorting. |
+| `max-prs-per-repo` | `3` | Maximum number of PRs to show under each repository. |
 | `lookback-days` | `365` | Only consider PRs merged within this many days. |
 | `marker-start` | `<!-- RECENT_PRS_START -->` | Start marker for the generated block. |
 | `marker-end` | `<!-- RECENT_PRS_END -->` | End marker for the generated block. |
 | `include-private` | `false` | Include private repositories in the generated list. |
 | `output-only` | `false` | Print and expose Markdown without editing README. |
+
+## Rendering
+
+Repositories with a single visible PR are rendered as a single line. Repositories
+with multiple visible PRs are rendered as a small ASCII tree. When a repository
+has more merged PRs than `max-prs-per-repo`, the tree includes a `more...` link
+to the repository's merged PR search for the profile owner.
+
+```md
+- [luccahuguet/yazelix](https://github.com/luccahuguet/yazelix)\
+  |-- [#605](https://github.com/luccahuguet/yazelix/pull/605) · chore: add prek to maintainer shell · merged 2026-06-04\
+  |-- [#603](https://github.com/luccahuguet/yazelix/pull/603) · Improve tutor · merged 2026-06-02\
+  '-- [more...](https://github.com/luccahuguet/yazelix/pulls?q=is%3Apr+author%3Abioinformatist+is%3Amerged)
+- [amruthpillai/reactive-resume#3095](https://github.com/amruthpillai/reactive-resume/pull/3095) · fix(auth): reconcile migrated social login accounts · merged 2026-05-25
+```
 
 ## Output-Only Mode
 
@@ -130,7 +151,7 @@ yourself.
 
 ```yaml
 - id: recent-prs
-  uses: bioinformatist/recent-merged-pr@v0.1.3
+  uses: bioinformatist/recent-merged-pr@v1
   with:
     token: ${{ secrets.RECENT_MERGED_PR_TOKEN }}
     output-only: true
@@ -139,7 +160,7 @@ yourself.
 ```
 
 For local CLI use, set `RECENT_MERGED_PR_TOKEN` and run
-`cargo run -- --help` for the equivalent flags.
+`nix develop -c cargo run -- --help` for the equivalent flags.
 
 ## License
 

@@ -10,10 +10,14 @@ inputs:
     description: README path to update when output-only is false.
     required: false
     default: README.md
-  limit:
-    description: Number of pull requests to keep after filtering and sorting.
+  repo-limit:
+    description: Number of repositories to display after filtering and sorting.
     required: false
     default: "6"
+  max-prs-per-repo:
+    description: Maximum number of pull requests to show under each repository.
+    required: false
+    default: "3"
   lookback-days:
     description: Only consider pull requests merged within this many days.
     required: false
@@ -49,7 +53,8 @@ runs:
       env:
         RECENT_MERGED_PR_TOKEN: ${{ inputs.token }}
         INPUT_README_PATH: ${{ inputs.readme-path }}
-        INPUT_LIMIT: ${{ inputs.limit }}
+        INPUT_REPO_LIMIT: ${{ inputs.repo-limit }}
+        INPUT_MAX_PRS_PER_REPO: ${{ inputs.max-prs-per-repo }}
         INPUT_LOOKBACK_DAYS: ${{ inputs.lookback-days }}
         INPUT_MARKER_START: ${{ inputs.marker-start }}
         INPUT_MARKER_END: ${{ inputs.marker-end }}
