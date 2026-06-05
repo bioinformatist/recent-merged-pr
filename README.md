@@ -115,6 +115,9 @@ bot identity used by GitHub Actions when a workflow commits generated files back
 to the repository. The `git diff --quiet` guard avoids empty commits when the
 generated README block did not change.
 
+The published action downloads a prebuilt Linux x64 binary from the matching
+GitHub Release instead of compiling the Rust CLI on every run.
+
 ## Inputs
 
 | Input | Default | Meaning |

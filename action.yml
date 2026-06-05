@@ -46,11 +46,10 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Install Rust
-      uses: dtolnay/rust-toolchain@stable
     - name: Run recent-merged-pr
       shell: bash
       env:
+        RECENT_MERGED_PR_VERSION: v1.0.1
         RECENT_MERGED_PR_TOKEN: ${{ inputs.token }}
         INPUT_README_PATH: ${{ inputs.readme-path }}
         INPUT_REPO_LIMIT: ${{ inputs.repo-limit }}
@@ -60,7 +59,21 @@ runs:
         INPUT_MARKER_END: ${{ inputs.marker-end }}
         INPUT_INCLUDE_PRIVATE: ${{ inputs.include-private }}
         INPUT_OUTPUT_ONLY: ${{ inputs.output-only }}
-      run: cargo run --release --manifest-path "${{ github.action_path }}/Cargo.toml"
+      run: |
+        set -euo pipefail
+
+        if [[ "${RUNNER_OS:-}" != "Linux" || "${RUNNER_ARCH:-}" != "X64" ]]; then
+          echo "recent-merged-pr currently ships a prebuilt binary only for Linux x64 runners." >&2
+          exit 1
+        fi
+
+        archive="recent-merged-pr-x86_64-unknown-linux-gnu.tar.gz"
+        url="https://github.com/bioinformatist/recent-merged-pr/releases/download/${RECENT_MERGED_PR_VERSION}/${archive}"
+        tmpdir="$(mktemp -d)"
+        trap 'rm -rf "$tmpdir"' EXIT
+
+        curl --fail --silent --show-error --location "$url" | tar -xz -C "$tmpdir"
+        "$tmpdir/recent-merged-pr"
 
 branding:
   icon: git-pull-request
